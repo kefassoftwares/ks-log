@@ -1,2 +1,3 @@
-# ks-log
-C++ log library mainly designed for multi-threaded software. Which creates different log files for different threads, so avoided mutexes.
+## ks-log
+C++ Log Library 
+Mainly designed for multi-threaded programs, which creates different log files for different threads.
