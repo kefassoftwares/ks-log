@@ -3,6 +3,7 @@
 #include <fstream>
 #include <map>
 #include <thread>
+#include <sstream>
 
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/filesystem.hpp>
@@ -46,7 +47,7 @@ namespace klog {
 #define CPP_SOURCE_FILE (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : strrchr(__FILE__, '\\') ? \
 strrchr(__FILE__, '\\') + 1 : __FILE__)
 
-#define LOG(statement, type) klog::Log::getInstance().write(statement, type, CPP_SOURCE_FILE, __LINE__)
+#define LOG(statement, type) std::ostringstream s; s << statement; klog::Log::getInstance().write(s.str(), type, CPP_SOURCE_FILE, __LINE__)
 #define LOG_INFO(statement) LOG(statement, klog::Severity::INFO)
 #define LOG_DEBUG(statement) LOG(statement, klog::Severity::DEBUG)
 #define LOG_WARNING(statement) LOG(statement, klog::Severity::WARNING)
