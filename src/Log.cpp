@@ -1,7 +1,11 @@
 #include <sstream>
+#include <ctime>
 
-#include <boost/date_time/posix_time/posix_time.hpp>
-#include <boost/filesystem.hpp>
+#if defined(__unix__) || defined(__linux__) 
+#include <sys/stat.h>
+#elif defined(_WIN32)
+#include <Windows.h>
+#endif
 
 #include "Log.h"
 #include "Utils.h"
@@ -18,21 +22,32 @@ namespace klog {
      * %s - Severity
      * %m - Message
      */
-    bool Log::init(const std::string& dir_, const std::string& appName_, std::string formatString_, Severity constraint_)
+    bool Log::init(const std::string& dir_, const std::string& appName_, const std::string& formatString_, Severity constraint_)
     {
         std::vector<Token> tokenList = parseFormatString(formatString_);
         _parser.reset(new RealtimeTokenParser(tokenList));
 
         _constraint = constraint_;
+            
+        char timeArray[50];
 
-        boost::posix_time::ptime now = boost::posix_time::second_clock::local_time();
-        _workDir = dir_ + "/" + appName_ + "_" + boost::posix_time::to_iso_string(now);
-        boost::filesystem::path dir(_workDir);
-        if (!boost::filesystem::create_directory(dir))
+        std::time_t now = std::time(NULL);
+        std::strftime(timeArray, sizeof(timeArray), "%Y%m%dT%H%M%S", std::localtime(&now));
+
+        _workDir = dir_ + "/" + appName_ + "_" + std::string(timeArray);
+        
+#if defined(__unix__) || defined(__linux__)
+        const int dirError = mkdir(_workDir.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+        if (-1 == dirError)
         {
             return false;
         }
-
+#elif defined(_WIN32)
+        if (!CreateDirectory(_workDir.c_str(), NULL))
+        {
+            return false;
+        }
+#endif
         _isInitialized = true;
         return true;
     }
@@ -64,29 +79,30 @@ namespace klog {
     /*
      * just a parser
     */
-    std::vector<Token> Log::parseFormatString(std::string& fmtString_)
+    std::vector<Token> Log::parseFormatString(const std::string& fmtString_)
     {
+        std::string fmtString = fmtString_;
         std::vector<Token> tokenList;
         while (true)
         {
-            unsigned loc = fmtString_.find_first_of('%');
+            unsigned long loc = fmtString.find_first_of('%');
             if (loc == std::string::npos)
             {
-                if(fmtString_.length() != 0)
-                    tokenList.push_back(Token(fmtString_));
+                if(fmtString.length() != 0)
+                    tokenList.push_back(Token(fmtString));
                 break;
             }
 
             if (loc > 0)
             {
-                tokenList.push_back(fmtString_.substr(0, loc));
+                tokenList.push_back(fmtString.substr(0, loc));
             }
 
-            if (loc < (fmtString_.length() - 1))
+            if (loc < (fmtString.length() - 1))
             {
-                char fmtChar = fmtString_[loc + 1];
+                char fmtChar = fmtString[loc + 1];
                 tokenList.push_back(Token(std::string("%") + fmtChar));
-                fmtString_.erase(0, loc + 2);
+                fmtString.erase(0, loc + 2);
             }
             else
             {

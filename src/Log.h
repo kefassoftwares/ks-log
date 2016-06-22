@@ -4,9 +4,7 @@
 #include <map>
 #include <thread>
 #include <sstream>
-
-#include <boost/date_time/posix_time/posix_time.hpp>
-#include <boost/filesystem.hpp>
+#include <cstring>
 
 #include "Token.h"
 #include "RealtimeTokenParser.h"
@@ -20,19 +18,19 @@ namespace klog {
 
         bool init(const std::string& dir_, 
             const std::string& appName_, 
-            std::string formatString_ = "%f(LineNo:%l) ThreadNo:%t [%d] %s:%m",
-            Severity constraint_ = Severity::INFO);
+            const std::string& formatString_,
+            Severity constraint_ = Severity::S_INFO);
 
         bool init(const std::string& dir_,
             const std::string& appName_,
-            Severity constraint_ = Severity::INFO);
+            Severity constraint_ = Severity::S_INFO);
 
         void write(const std::string& logMessage_, Severity logType_, const std::string& sourceFile_, long int lineNum_);
 
         static Log& getInstance();
       
     private:
-        std::vector<Token> parseFormatString(std::string& fmtString_);
+        std::vector<Token> parseFormatString(const std::string& fmtString_);
         std::ofstream& getStream();
         Log() = default;
 
@@ -48,11 +46,11 @@ namespace klog {
 strrchr(__FILE__, '\\') + 1 : __FILE__)
 
 #define LOG(statement, type) std::ostringstream s; s << statement; klog::Log::getInstance().write(s.str(), type, CPP_SOURCE_FILE, __LINE__)
-#define LOG_INFO(statement) LOG(statement, klog::Severity::INFO)
-#define LOG_DEBUG(statement) LOG(statement, klog::Severity::DEBUG)
-#define LOG_WARNING(statement) LOG(statement, klog::Severity::WARNING)
-#define LOG_ERROR(statement) LOG(statement, klog::Severity::ERROR)
-#define LOG_CRITICAL(statement) LOG(statement, klog::Severity::CRITICAL)
+#define LOG_INFO(statement) LOG(statement, klog::Severity::S_INFO)
+#define LOG_DEBUG(statement) LOG(statement, klog::Severity::S_DEBUG)
+#define LOG_WARNING(statement) LOG(statement, klog::Severity::S_WARNING)
+#define LOG_ERROR(statement) LOG(statement, klog::Severity::S_ERROR)
+#define LOG_CRITICAL(statement) LOG(statement, klog::Severity::S_CRITICAL)
 
 
 //add 1. formatting

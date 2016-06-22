@@ -1,4 +1,5 @@
 #pragma once
+
 #include <iostream>
 #include <string>
 #include <vector>
@@ -14,6 +15,7 @@ namespace klog {
         std::string parse(const std::string& logMessage_, Severity logType_, const std::string& sourceFile_, long int lineNum_) const;
     private:
         const std::vector<Token> _tokenList;
+        std::string getSimpleTime() const;
     };
 
 }

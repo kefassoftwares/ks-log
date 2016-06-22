@@ -2,13 +2,14 @@
 #include <map>
 namespace klog {
 
+    //the s_ is used to avoid conflict with macros in windows
     enum class Severity
     {
-        INFO = 0,
-        DEBUG = 1,
-        WARNING = 2,
-        ERROR = 3,
-        CRITICAL = 4
+        S_INFO = 0,
+        S_DEBUG = 1,
+        S_WARNING = 2,
+        S_ERROR = 3,
+        S_CRITICAL = 4
     };
 
     enum class TokenType
