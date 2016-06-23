@@ -10,7 +10,7 @@ void threadfun()
 
 int main()
 {
-    if (!klog::Log::getInstance().init(".", "ChatApp", klog::Severity::CRITICAL))
+    if (!klog::Log::getInstance().init(".", "ChatApp", klog::Severity::S_CRITICAL))
     {
         std::cout << "Oops..!!" << std::endl;
     }
