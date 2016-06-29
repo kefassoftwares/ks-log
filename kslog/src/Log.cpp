@@ -17,6 +17,7 @@ namespace klog {
      */
     bool Log::init(const std::string& dir_, const std::string& appName_, const std::string& formatString_, Severity constraint_)
     {
+        
         std::vector<Token> tokenList = parseFormatString(formatString_);
         _parser.reset(new RealtimeTokenParser(tokenList));
 
