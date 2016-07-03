@@ -1,0 +1,16 @@
+set(MergeLogs_SRCS Main.cpp Merge.cpp StreamHandler.cpp TokenSorter.cpp LogToken.cpp)
+#include_directories("../src")
+
+if (WIN32)
+	set(BOOST_ROOT "C:/Program Files/boost/boost_1_59_0")
+	include_directories(${BOOST_ROOT})
+	set(BOOST_LIBRARYDIR "C:/Program Files/boost/boost_1_59_0/stage/lib")
+	set(Boost_USE_STATIC_LIBS        ON)
+	set(Boost_USE_MULTITHREADED      ON)
+	set(Boost_USE_STATIC_RUNTIME    OFF)
+	set(MergeLogs_SRCS ${MergeLogs_SRCS} Merge.h StreamHandler.h TokenSorter.h LogToken.h)
+endif (WIN32)
+
+find_package(Boost COMPONENTS system filesystem date_time REQUIRED)
+add_executable(MergeLogs ${MergeLogs_SRCS} )
+target_link_libraries(MergeLogs ${Boost_LIBRARIES})
