@@ -8,7 +8,7 @@ if (WIN32)
 	set(Boost_USE_STATIC_LIBS        ON)
 	set(Boost_USE_MULTITHREADED      ON)
 	set(Boost_USE_STATIC_RUNTIME    OFF)
-	set(MergeLogs_SRCS ${MergeLogs_SRCS} Merge.h StreamHandler.h TokenSorter.h LogToken.h)
+	set(MergeLogs_SRCS ${MergeLogs_SRCS} Merge.h StreamHandler.h TokenSorter.h LogToken.h TokenExtractor.h)
 endif (WIN32)
 
 find_package(Boost COMPONENTS system filesystem date_time REQUIRED)

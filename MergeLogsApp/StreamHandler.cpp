@@ -5,6 +5,7 @@
 namespace KMergeLogs {
 
     StreamHandler::StreamHandler(const std::string & appDir_)
+        :_appDir(appDir_)
     {
         boost::filesystem::path path(appDir_);
         if (boost::filesystem::exists(path) && boost::filesystem::is_directory(path))
@@ -16,9 +17,24 @@ namespace KMergeLogs {
                 if (boost::filesystem::is_regular_file(it->status()))
                 {
                     std::cout << appDir_ << "/" << it->path().filename().string() << " file " << std::endl;
-                    _streams.push_back(std::shared_ptr<std::ifstream>(new std::ifstream(appDir_ + "/" + it->path().filename().string())));
+                    if (it->path().filename().string() == ".loginfo")
+                    {
+                        continue;
+                    }
+
+                    _streams.push_back(TokenExtractor(
+                             std::shared_ptr<std::ifstream>(new std::ifstream(appDir_ + "/" + it->path().filename().string()))));
                 }
             }
+        }
+    }
+
+    std::string StreamHandler::readFormatString()
+    {
+        std::ifstream ifs(_appDir + "/.loginfo");
+        if (ifs)
+        {
+
         }
     }
 

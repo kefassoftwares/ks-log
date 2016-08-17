@@ -5,12 +5,13 @@
 void threadfun()
 {
     static int i = 0;
+    std::cout << "Hello " << i << std::endl;
     LOG_CRITICAL("This is another thread. This should be in other file thread:" );
 }
 
 int main()
 {
-    if (!klog::Log::getInstance().init(".", "ChatApp", klog::Severity::S_CRITICAL))
+    if (!klog::Log::getInstance().init(".", "ChatApp"))
     {
         std::cout << "Oops..!!" << std::endl;
     }

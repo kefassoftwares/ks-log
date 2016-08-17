@@ -4,16 +4,21 @@
 
 namespace KMergeLogs {
     
-    Merge::Merge(const std::string& logDir_, const std::string& dateFormat_)
+    Merge::Merge(const std::string& logDir_, const std::string& logFormat_)
         :_logDir(logDir_),
-        _dateFormat(dateFormat_)
+        _logFormat(logFormat_)
     {}
 
     void Merge::start()
     {
-        TokenSorter ts(_logDir, _dateFormat);
+        StreamHandler handler(_logDir);
+        TokenSorter ts(handler.getExtractorStreams(), _logFormat);
         
-        std::cout << "Hello" << std::endl;
+        while (ts)
+        {
+            LogToken token = ts.getNextToken();
+
+        }
     }
     
 }

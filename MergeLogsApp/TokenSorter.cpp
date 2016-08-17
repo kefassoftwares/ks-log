@@ -4,10 +4,16 @@ namespace KMergeLogs {
 
     
 
-    TokenSorter::TokenSorter(const std::string& logDir_, const std::string& dateFormat_)
-        :_streamHandler(logDir_)
+    TokenSorter::TokenSorter(const TokenExtrVector& streams_, const std::string& dateFormat_)
+        :_streams(streams_)
+    {
+        
+    }
+
+    LogToken TokenSorter::getNextToken()
     {
 
+        return LogToken();
     }
 
 }

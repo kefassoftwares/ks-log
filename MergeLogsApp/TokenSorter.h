@@ -1,16 +1,24 @@
 #pragma once
-#include<iostream>
-#include "StreamHandler.h"
+#include <iostream>
+#include <vector>
+#include <memory>
 #include "LogToken.h"
+#include "TokenExtractor.h"
 
 namespace KMergeLogs {
     
     class TokenSorter {
     public:
-        TokenSorter(const std::string& logDir_, const std::string& dateFormat_);
+        typedef std::vector<TokenExtractor> TokenExtrVector;
+        TokenSorter(const TokenExtrVector& streams_, const std::string& dateFormat_);
+        LogToken getNextToken();
+        operator bool() const
+        {
+            return !_tokenQueue.empty();
+        }
     private:
-        StreamHandler           _streamHandler;
-       // std::vector<LogToken>   _tokenQueue;
+        std::vector<LogToken>       _tokenQueue;
+        const TokenExtrVector&      _streams;
     };
-
+    
 }
