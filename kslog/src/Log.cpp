@@ -133,7 +133,7 @@ namespace klog {
     */
     void Log::write(const LogData& logData_)
     {
-        if (logData_.getSeverity()->getLevel() <= _constraint)
+        if (logData_.getSeverity().getLevel() <= _constraint)
             return;
 
         std::ostringstream ret;
@@ -142,26 +142,33 @@ namespace klog {
             tokenPtr->getContent(logData_, ret);
         }
 
-        getStream() << ret.str();
+        *getStreams().first << ret.str();
     }
 
     /*
     * returns current thread's stream, creates one if not exists
     */
-    std::ofstream& Log::getStream()
+    Log::StreamsPair& Log::getStreams()
     {
         std::thread::id threadId = std::this_thread::get_id();
-        auto it = _streamMap.find(threadId);
-        if (it == _streamMap.end())
+        for (auto& streamPair : _streamMap)
         {
-            std::string threadNum = "";
-            std::ostringstream stream;
-            stream << threadId;
-            StreamPtr threadFileStream(new std::ofstream(_workDir + "/" + stream.str() + ".txt"));
-            _streamMap.insert(std::make_pair(threadId, threadFileStream));
-            return *threadFileStream;
+            if (streamPair.first == threadId)
+            {
+                return streamPair.second;
+            }
         }
-        return *it->second;
+
+        //thread safe stream adding
+        std::string threadNum = "";
+        std::ostringstream stream;
+        stream << threadId;
+        StreamsPair threadFileStream(std::make_pair(OfStreamPtr(new std::ofstream(_workDir + "/" + stream.str() + ".txt")), 
+                                    StringStreamPtr(new std::ostringstream())));
+        std::lock_guard<std::mutex> lock(_streamCreateMutex);
+        _streamMap.push_back(std::make_pair(threadId, threadFileStream));
+        return threadFileStream;
+        
     }
 
     /*
@@ -171,5 +178,35 @@ namespace klog {
     {
         static Log log;
         return log;
+    }
+
+    CriticalSeverity & Log::criticalSeverity()
+    {
+        static CriticalSeverity cSeverity;
+        return cSeverity;
+    }
+
+    ErrorSeverity & Log::errorSeverity()
+    {
+        static ErrorSeverity eSeverity;
+        return eSeverity;
+    }
+
+    DebugSeverity & Log::debugSeverity()
+    {
+        static DebugSeverity dSeverity;
+        return dSeverity;
+    }
+
+    WarningSeverity & Log::warningSeverity()
+    {
+        static WarningSeverity wSeverity;
+        return wSeverity;
+    }
+
+    InfoSeverity & Log::infoSeverity()
+    {
+        static InfoSeverity iSeverity;
+        return iSeverity;
     }
 }
