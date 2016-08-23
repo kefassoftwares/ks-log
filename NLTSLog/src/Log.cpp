@@ -241,8 +241,11 @@ namespace NLTSLog{
         unsigned mISec = t % 1000000;
         for (int i = 0; i < 6; i++)
         {
-            mSec[5 - i] = mISec % 10;
+            mSec[5 - i] = (char)(48 + (mISec % 10));
+            mISec /= 10;
         }
+
+        timeStream << mSec;
 #endif
         return timeStream.str();
 

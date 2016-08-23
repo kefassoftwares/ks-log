@@ -16,6 +16,7 @@ namespace KMergeLogs {
     */
     LogToken Tokenizer::getNextToken()
     {
+
         std::string searchString(&_buffer[_bufferConsumed], _nReadBytes - _bufferConsumed);
         std::smatch match;
         
@@ -25,7 +26,6 @@ namespace KMergeLogs {
         {
             unsigned pos = match.position();
             std::string str = match[0].str();
-            std::cout << pos << ":" << str << std::endl;
             _bufferConsumed += (pos + str.length());
 
             return LogToken(str);
@@ -49,7 +49,7 @@ namespace KMergeLogs {
             _buffer[startPos] = _buffer[i];
         }
         //append the read content
-        _stream->read(&_buffer[8193 - _bufferConsumed], _bufferConsumed);
+        _stream->read(&_buffer[8192 - _bufferConsumed], _bufferConsumed);
         _bufferConsumed = 0;
         _nReadBytes = _stream->gcount();
     }

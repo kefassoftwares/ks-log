@@ -21,6 +21,7 @@ namespace KMergeLogs {
         LogToken():_content(""), _type(TokenType::BAD_TOKEN) { }
         const std::string& getContent() const { return _content; }
         TokenType getType() { return _type; }
+        boost::posix_time::ptime getTime() { return _time; }
     private:
         std::string getDateString();
 

@@ -6,7 +6,6 @@ namespace KMergeLogs {
         ,_type(TokenType::GOOD_TOKEN)
     {
         std::string dateStr = getDateString();
-        std::cout << "Date: " << dateStr << std::endl;
         std::istringstream is(dateStr);
         is.imbue(std::locale::classic());
 
