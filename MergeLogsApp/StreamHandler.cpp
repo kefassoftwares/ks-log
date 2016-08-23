@@ -8,6 +8,10 @@ namespace KMergeLogs {
         :_appDir(appDir_)
     {
         boost::filesystem::path path(appDir_);
+
+        FormatAnalyzer analyzer(readFormatString());
+        std::regex formatRegex = analyzer.getRegex();
+        
         if (boost::filesystem::exists(path) && boost::filesystem::is_directory(path))
         {
             
@@ -16,14 +20,17 @@ namespace KMergeLogs {
             {
                 if (boost::filesystem::is_regular_file(it->status()))
                 {
-                    std::cout << appDir_ << "/" << it->path().filename().string() << " file " << std::endl;
+                    //std::cout << appDir_ << "/" << it->path().filename().string() << " file " << std::endl;
                     if (it->path().filename().string() == ".loginfo")
                     {
                         continue;
                     }
 
-                    _streams.push_back(TokenExtractor(
-                             std::shared_ptr<std::ifstream>(new std::ifstream(appDir_ + "/" + it->path().filename().string()))));
+                    _streams.push_back(Tokenizer(
+                                           std::shared_ptr<std::ifstream>(
+                                               new std::ifstream(appDir_ + "/" + it->path().
+                                                                 filename().string())),
+                                           formatRegex));
                 }
             }
         }
@@ -31,11 +38,19 @@ namespace KMergeLogs {
 
     std::string StreamHandler::readFormatString()
     {
-        std::ifstream ifs(_appDir + "/.loginfo");
-        if (ifs)
+        std::ifstream is(_appDir + "/.loginfo");
+        if (!is)
         {
-
+            throw std::runtime_error("Unable to determine log format");
         }
+
+        std::stringstream sstr;
+        sstr << is.rdbuf();
+        std::string logFormat = sstr.str();
+        
+        //std::cout << logFormat << std::endl;
+        return logFormat;
     }
+
 
 }

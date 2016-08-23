@@ -3,14 +3,14 @@
 #include <vector>
 #include <memory>
 #include "LogToken.h"
-#include "TokenExtractor.h"
+#include "Tokenizer.h"
 
 namespace KMergeLogs {
     
     class TokenSorter {
     public:
-        typedef std::vector<TokenExtractor> TokenExtrVector;
-        TokenSorter(const TokenExtrVector& streams_, const std::string& dateFormat_);
+        typedef std::vector<Tokenizer> TokenizerVector;
+        TokenSorter(const TokenizerVector& streams_);
         LogToken getNextToken();
         operator bool() const
         {
@@ -18,7 +18,7 @@ namespace KMergeLogs {
         }
     private:
         std::vector<LogToken>       _tokenQueue;
-        const TokenExtrVector&      _streams;
+        TokenizerVector             _streams;
     };
     
 }

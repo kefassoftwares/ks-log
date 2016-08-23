@@ -4,16 +4,16 @@ namespace KMergeLogs {
 
     
 
-    TokenSorter::TokenSorter(const TokenExtrVector& streams_, const std::string& dateFormat_)
+    TokenSorter::TokenSorter(const TokenizerVector& streams_)
         :_streams(streams_)
     {
-        
+        _tokenQueue.push_back(LogToken(""));
     }
 
     LogToken TokenSorter::getNextToken()
     {
-
-        return LogToken();
+        _tokenQueue.erase(_tokenQueue.begin());
+        return _streams[0].getNextToken();
     }
 
 }

@@ -1,4 +1,4 @@
-set(MergeLogs_SRCS Main.cpp Merge.cpp StreamHandler.cpp TokenSorter.cpp LogToken.cpp)
+set(MergeLogs_SRCS Main.cpp Merge.cpp StreamHandler.cpp TokenSorter.cpp LogToken.cpp Tokenizer.cpp FormatAnalyzer.cpp)
 #include_directories("../src")
 
 if (WIN32)
@@ -8,7 +8,7 @@ if (WIN32)
 	set(Boost_USE_STATIC_LIBS        ON)
 	set(Boost_USE_MULTITHREADED      ON)
 	set(Boost_USE_STATIC_RUNTIME    OFF)
-	set(MergeLogs_SRCS ${MergeLogs_SRCS} Merge.h StreamHandler.h TokenSorter.h LogToken.h TokenExtractor.h)
+	set(MergeLogs_SRCS ${MergeLogs_SRCS} Merge.h StreamHandler.h TokenSorter.h LogToken.h Tokenizer.h FormatAnalyzer.h)
 endif (WIN32)
 
 find_package(Boost COMPONENTS system filesystem date_time REQUIRED)

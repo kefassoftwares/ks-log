@@ -7,18 +7,19 @@
 
 namespace KMergeLogs {
 
-    class LogToken {
-        std::ifstream s;
-        LogToken()
-        {
-            std::string ss;
-            ss.length();
-            ss.length();
-            std::stringstream sd;
-            std::shared_ptr<std::string> st;
-            st->length();
-            
-        }
+    struct LogToken {
+        enum class TokenType {
+            GOOD_TOKEN,
+            BAD_TOKEN
+        };
+
+        LogToken(const std::string& content_);
+        LogToken():_content(""), _type(TokenType::BAD_TOKEN) { }
+        const std::string& getContent() const { return _content; }
+        TokenType getType() { return _type; }
+    private:
+        std::string _content;
+        TokenType   _type;
     };
 
 }

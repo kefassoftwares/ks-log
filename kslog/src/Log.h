@@ -129,10 +129,10 @@ namespace klog {
 
         std::string getSimpleTime() const
         {
-            char timeArray[50];
             std::ostringstream timeStream;
 
 #if defined(__unix__) || defined(__linux__)
+            char timeArray[50];
             timeval tv;
             gettimeofday(&tv, 0);
             std::strftime(timeArray, sizeof(timeArray), "%Y-%b-%d %H:%M:%S.", std::localtime(&tv.tv_sec));

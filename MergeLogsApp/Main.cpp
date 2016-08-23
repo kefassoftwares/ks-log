@@ -6,8 +6,12 @@ int main(int argc, char *argv[])
     if (argc > 1)
     {
         std::string logDir(argv[1]);
-        std::string logFormat((argc > 2) ? argv[2] : "");
-        KMergeLogs::Merge merge(logDir, logFormat);
+        KMergeLogs::Merge merge(logDir);
         merge.start();
+        std::cin >> argc;
+        return 0;
     }
+
+    std::cout << "Usage: Merge <foldername>" << std::endl;
+    return 0;
 }

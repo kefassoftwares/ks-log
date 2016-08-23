@@ -2,19 +2,20 @@
 #include <iostream>
 #include <queue>
 #include <memory>
-#include "TokenExtractor.h"
+#include "Tokenizer.h"
+#include "FormatAnalyzer.h"
 
 namespace KMergeLogs{
 
     class StreamHandler{
-        typedef std::vector<TokenExtractor> TokenExtrVector;
+        typedef std::vector<Tokenizer> TokenizerVector;
     public:
         StreamHandler(const std::string& appDir_);
-        bool writeLogToken(const LogToken& token_) {   }
-        const TokenExtrVector& getExtractorStreams() { return _streams;  }
-        std::string readFormatString();
+        bool writeLogToken(const LogToken& token_) { std::cout << token_.getContent() << std::endl; return true; }
+        TokenizerVector& getExtractorStreams() { return _streams;  }
     private:
-        TokenExtrVector     _streams;
+        TokenizerVector     _streams;
         const std::string&  _appDir;
+        std::string readFormatString();
     };
 }

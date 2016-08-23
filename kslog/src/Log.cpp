@@ -142,7 +142,7 @@ namespace klog {
             tokenPtr->getContent(logData_, ret);
         }
 
-        *getStreams().first << ret.str();
+        *getStreams().first << ret.str() << std::endl;
     }
 
     /*
@@ -167,7 +167,7 @@ namespace klog {
                                     StringStreamPtr(new std::ostringstream())));
         std::lock_guard<std::mutex> lock(_streamCreateMutex);
         _streamMap.push_back(std::make_pair(threadId, threadFileStream));
-        return threadFileStream;
+        return _streamMap.back().second;
         
     }
 

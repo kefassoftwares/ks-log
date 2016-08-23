@@ -4,20 +4,25 @@
 
 namespace KMergeLogs {
     
-    Merge::Merge(const std::string& logDir_, const std::string& logFormat_)
-        :_logDir(logDir_),
-        _logFormat(logFormat_)
-    {}
+    Merge::Merge(const std::string& logDir_)
+        :_logDir(logDir_)
+    {
+      /*  std::ifstream is(logDir_);
+        if (!is.good())
+        {
+            throw std::runtime_error("No such folder: " + logDir_);
+        }*/
+    }
 
     void Merge::start()
     {
         StreamHandler handler(_logDir);
-        TokenSorter ts(handler.getExtractorStreams(), _logFormat);
+        TokenSorter ts(handler.getExtractorStreams());
         
         while (ts)
         {
             LogToken token = ts.getNextToken();
-
+            handler.writeLogToken(token);
         }
     }
     
