@@ -1,6 +1,6 @@
 #include "Log.h"
 
-namespace klog {
+namespace NLTSLog{
 
     /*
     * initialization function. This function should be called initially in user app to use the library

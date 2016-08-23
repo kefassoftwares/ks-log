@@ -17,7 +17,7 @@
 #include <Windows.h>
 #endif
 
-namespace klog {
+namespace NLTSLog{
 
     //the s_ is used to avoid conflict with macros in windows
     enum class S_Severity
@@ -202,14 +202,14 @@ namespace klog {
 #define CPP_SOURCE_FILE (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : strrchr(__FILE__, '\\') ? \
 strrchr(__FILE__, '\\') + 1 : __FILE__)
 
-#define LOG(statement, type) klog::Log::getInstance().getStreams().second->str(""); *(klog::Log::getInstance().getStreams().second) << statement;\
-        klog::Log::getInstance().write(klog::LogData(CPP_SOURCE_FILE, __LINE__, klog::Log::getInstance().getStreams().second->str(), type));
+#define LOG(statement, type) NLTSLog::Log::getInstance().getStreams().second->str(""); *(NLTSLog::Log::getInstance().getStreams().second) << statement;\
+        NLTSLog::Log::getInstance().write(NLTSLog::LogData(CPP_SOURCE_FILE, __LINE__, NLTSLog::Log::getInstance().getStreams().second->str(), type));
 
-#define LOG_INFO(statement) LOG(statement, klog::Log::infoSeverity())
-#define LOG_DEBUG(statement) LOG(statement, klog::Log::debugSeverity())
-#define LOG_WARNING(statement) LOG(statement, klog::Log::warningSeverity())
-#define LOG_ERROR(statement) LOG(statement, klog::Log::errorSeverity())
-#define LOG_CRITICAL(statement) LOG(statement, klog::Log::criticalSeverity())
+#define LOG_INFO(statement) LOG(statement, NLTSLog::Log::infoSeverity())
+#define LOG_DEBUG(statement) LOG(statement, NLTSLog::Log::debugSeverity())
+#define LOG_WARNING(statement) LOG(statement, NLTSLog::Log::warningSeverity())
+#define LOG_ERROR(statement) LOG(statement, NLTSLog::Log::errorSeverity())
+#define LOG_CRITICAL(statement) LOG(statement, NLTSLog::Log::criticalSeverity())
 
 
 //add 1. formatting

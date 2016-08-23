@@ -317,7 +317,7 @@ void threadfun()
 
 int main()
 {
-    if (!klog::Log::getInstance().init(".", "ChatApp"))
+    if (!NLTSLog::Log::getInstance().init(".", "ChatApp"))
     {
         std::cout << "Oops..!!" << std::endl;
     }
