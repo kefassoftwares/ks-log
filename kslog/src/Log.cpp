@@ -209,4 +209,53 @@ namespace klog {
         static InfoSeverity iSeverity;
         return iSeverity;
     }
+
+    std::string DateTimeToken::getSimpleTime() const
+    {
+        std::ostringstream timeStream;
+
+#if defined(__unix__) || defined(__linux__)
+        char timeArray[50];
+        timeval tv;
+        gettimeofday(&tv, 0);
+        std::strftime(timeArray, sizeof(timeArray), "%Y-%b-%d %H:%M:%S.", std::localtime(&tv.tv_sec));
+        timeStream << timeArray << tv.tv_usec;
+#elif defined(_WIN32)
+        FILETIME ft;
+        SYSTEMTIME st;
+        GetSystemTimeAsFileTime(&ft);
+        FileTimeToSystemTime(&ft, &st);
+
+        unsigned long long int t = ft.dwHighDateTime;
+        t <<= 32;
+        t |= ft.dwLowDateTime;
+
+        t /= 10;
+        t -= 11644473600000000;
+
+        std::vector<std::string> months = { "Jan", "Feb", "Mar", "Jun", "Jul", "Aug", "Sep", "Nov", "Dec" };
+        timeStream << st.wYear << "-" << months[st.wMonth] << "-" << handleSingleDigit(st.wDay)
+            << " " << handleSingleDigit(st.wHour) << ":" << handleSingleDigit(st.wMinute) << ":" << handleSingleDigit(st.wSecond) << ".";
+
+        std::string mSec = "000000";
+        unsigned mISec = t % 1000000;
+        for (int i = 0; i < 6; i++)
+        {
+            mSec[5 - i] = mISec % 10;
+        }
+#endif
+        return timeStream.str();
+
+    }
+
+    std::string DateTimeToken::handleSingleDigit(int digit_) const
+    {
+        int i = digit_ / 10;
+        if (i == 0)
+        {
+            return std::string("0") + std::to_string(digit_);
+        }
+
+        return std::to_string(digit_);
+    }
 }

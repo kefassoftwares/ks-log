@@ -4,6 +4,10 @@
 #include <fstream>
 #include <sstream>
 #include <memory>
+#include <regex>
+
+#include <boost/date_time/posix_time/posix_time.hpp>
+#include <boost/locale.hpp>
 
 namespace KMergeLogs {
 
@@ -18,8 +22,11 @@ namespace KMergeLogs {
         const std::string& getContent() const { return _content; }
         TokenType getType() { return _type; }
     private:
-        std::string _content;
-        TokenType   _type;
+        std::string getDateString();
+
+        std::string                 _content;
+        TokenType                   _type;
+        boost::posix_time::ptime    _time;
     };
 
 }

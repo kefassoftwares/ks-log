@@ -11,6 +11,6 @@ if (WIN32)
 	set(MergeLogs_SRCS ${MergeLogs_SRCS} Merge.h StreamHandler.h TokenSorter.h LogToken.h Tokenizer.h FormatAnalyzer.h)
 endif (WIN32)
 
-find_package(Boost COMPONENTS system filesystem date_time REQUIRED)
+find_package(Boost COMPONENTS system filesystem locale date_time REQUIRED)
 add_executable(MergeLogs ${MergeLogs_SRCS} )
 target_link_libraries(MergeLogs ${Boost_LIBRARIES})

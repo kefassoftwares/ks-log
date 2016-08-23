@@ -127,36 +127,8 @@ namespace klog {
             stream_ << getSimpleTime();
         }
 
-        std::string getSimpleTime() const
-        {
-            std::ostringstream timeStream;
-
-#if defined(__unix__) || defined(__linux__)
-            char timeArray[50];
-            timeval tv;
-            gettimeofday(&tv, 0);
-            std::strftime(timeArray, sizeof(timeArray), "%Y-%b-%d %H:%M:%S.", std::localtime(&tv.tv_sec));
-            timeStream << timeArray << tv.tv_usec;
-#elif defined(_WIN32)
-            FILETIME ft;
-            SYSTEMTIME st;
-            GetSystemTimeAsFileTime(&ft);
-            FileTimeToSystemTime(&ft, &st);
-
-            unsigned long long int t = ft.dwHighDateTime;
-            t <<= 32;
-            t |= ft.dwLowDateTime;
-
-            t /= 10;
-            t -= 11644473600000000;
-
-            std::vector<std::string> months = { "Jan", "Feb", "Mar", "Jun", "Jul", "Aug", "Sep", "Nov", "Dec" };
-            timeStream << st.wYear << "-" << months[st.wMonth] << "-" << st.wDay
-                << " " << st.wHour << ":" << st.wMinute << ":" << st.wSecond << "." << t % 1000000;
-#endif
-            return timeStream.str();
-
-        }
+        std::string getSimpleTime() const;
+        std::string handleSingleDigit(int digit_) const;
     };
 
     struct SeverityToken :public Token {
