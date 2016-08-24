@@ -1,3 +1,4 @@
+#pragma once
 #include <memory>
 #include <iostream>
 #include <sstream>
@@ -16,6 +17,8 @@
 #elif defined(_WIN32)
 #include <Windows.h>
 #endif
+
+#define LOG_CACHE_SIZE 8192
 
 namespace NLTSLog{
 
@@ -161,8 +164,6 @@ namespace NLTSLog{
     struct Log {
 
         typedef std::shared_ptr<std::ofstream> OfStreamPtr;
-        typedef std::shared_ptr<std::ostringstream> StringStreamPtr;
-        typedef std::pair<OfStreamPtr, StringStreamPtr> StreamsPair;
 
         bool init(const std::string& dir_,
             const std::string& appName_,
@@ -174,7 +175,7 @@ namespace NLTSLog{
             S_Severity constraint_ = S_Severity::S_INFO);
 
         void write(const LogData& logData_);
-        StreamsPair& getStreams();
+        std::ofstream& getStream();
 
         static Log& getInstance();
     
@@ -191,7 +192,7 @@ namespace NLTSLog{
 
         bool                                                        _isInitialized = false;
         std::string                                                 _workDir;
-        std::list<std::pair<std::thread::id, StreamsPair>>          _streamMap;
+        std::list<std::pair<std::thread::id, OfStreamPtr>>          _streamMap;
         S_Severity                                                  _constraint;
         std::vector<std::shared_ptr<Token>>                         _tokenList;
         std::mutex                                                  _streamCreateMutex;
@@ -202,8 +203,7 @@ namespace NLTSLog{
 #define CPP_SOURCE_FILE (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : strrchr(__FILE__, '\\') ? \
 strrchr(__FILE__, '\\') + 1 : __FILE__)
 
-#define LOG(statement, type) NLTSLog::Log::getInstance().getStreams().second->str(""); *(NLTSLog::Log::getInstance().getStreams().second) << statement;\
-        NLTSLog::Log::getInstance().write(NLTSLog::LogData(CPP_SOURCE_FILE, __LINE__, NLTSLog::Log::getInstance().getStreams().second->str(), type));
+#define LOG(statement, type) NLTSLog::Log::getInstance().write(NLTSLog::LogData(CPP_SOURCE_FILE, __LINE__, (static_cast<const std::ostringstream&>(std::move(std::ostringstream())<<statement).str()), type));
 
 #define LOG_INFO(statement) LOG(statement, NLTSLog::Log::infoSeverity())
 #define LOG_DEBUG(statement) LOG(statement, NLTSLog::Log::debugSeverity())

@@ -1,7 +1,7 @@
 #include <iostream>
 #include <thread>
 #include "Log.h"
-
+/*
 void threadfun()
 {
     static int i = 0;
@@ -16,16 +16,19 @@ void threadfun()
     LOG_CRITICAL("This is another thread. This should be in other file thread:");
 
 }
-
+*/
 int main()
 {
-    if (!NLTSLog::Log::getInstance().init(".", "ChatApp"))
+    if (!NLTSLog::Log::getInstance().init(".", "ChatApp","***[%d][thread %t] %m v ***"))
     {
         std::cout << "Oops..!!" << std::endl;
     }
 
-    LOG_ERROR("The Developer Needs to test the output!!");
-    std::vector<std::thread> tv;
+    for (int i = 0; i < 100000; i++)
+    {
+        LOG_ERROR("The Developer Needs to test the output!!");
+    }
+    /*std::vector<std::thread> tv;
     for (int i = 0; i < 6; i++)
     {
         tv.push_back(std::thread(threadfun));
@@ -34,7 +37,7 @@ int main()
     for (auto it = tv.begin(); it != tv.end(); ++it)
     {
         it->join();
-    }
+    }*/
 }
 
 //Linux:

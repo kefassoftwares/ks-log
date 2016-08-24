@@ -142,33 +142,30 @@ namespace NLTSLog{
             tokenPtr->getContent(logData_, ret);
         }
 
-        *getStreams().first << ret.str() << std::endl;
+        getStream() << ret.str() << std::endl;
     }
 
     /*
     * returns current thread's stream, creates one if not exists
     */
-    Log::StreamsPair& Log::getStreams()
+    std::ofstream& Log::getStream()
     {
         std::thread::id threadId = std::this_thread::get_id();
         for (auto& streamPair : _streamMap)
         {
             if (streamPair.first == threadId)
             {
-                return streamPair.second;
+                return *streamPair.second;
             }
         }
-
         //thread safe stream adding
         std::string threadNum = "";
         std::ostringstream stream;
         stream << threadId;
-        StreamsPair threadFileStream(std::make_pair(OfStreamPtr(new std::ofstream(_workDir + "/" + stream.str() + ".txt")), 
-                                    StringStreamPtr(new std::ostringstream())));
+        OfStreamPtr threadFileStream(new std::ofstream(_workDir + "/" + stream.str() + ".txt"));
         std::lock_guard<std::mutex> lock(_streamCreateMutex);
         _streamMap.push_back(std::make_pair(threadId, threadFileStream));
-        return _streamMap.back().second;
-        
+        return *_streamMap.back().second;
     }
 
     /*
