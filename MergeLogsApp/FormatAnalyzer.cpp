@@ -1,6 +1,8 @@
 #include "FormatAnalyzer.h"
 namespace KMergeLogs {
-    
+    /*
+    * returns the regular expression of given format
+    */
     std::regex FormatAnalyzer::getRegex()
     {
         return std::regex(extractFormatTokens());
@@ -39,8 +41,7 @@ namespace KMergeLogs {
             }
         }
         
-        regexStream << "?)(?=((\n" << _firstTokenRegex << ")|(\n)))";
-        //std::cout << "Regular Expression:" << regexStream.str() << std::endl;
+        regexStream << "?)(?=((\n" << _firstTokenRegex << ")|(\n$)))";
         return regexStream.str();
     }
     
@@ -113,7 +114,6 @@ namespace KMergeLogs {
             }
             if(flag) ret += str_[i];
         }
-        //std::cout << "Reporting optimization, was" << str_ << " converted to " << ret << std::endl; 
         return ret;
     }
     

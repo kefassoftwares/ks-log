@@ -1,17 +1,17 @@
 #include "Merge.h"
 #include "TokenSorter.h"
 #include <iostream>
+#include <boost/filesystem.hpp>
 
 namespace KMergeLogs {
     
     Merge::Merge(const std::string& logDir_)
         :_logDir(logDir_)
     {
-      /*  std::ifstream is(logDir_);
-        if (!is.good())
+        if (!boost::filesystem::exists(logDir_)) 
         {
             throw std::runtime_error("No such folder: " + logDir_);
-        }*/
+        }
     }
 
     void Merge::start()

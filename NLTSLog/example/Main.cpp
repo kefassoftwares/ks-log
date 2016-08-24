@@ -5,14 +5,14 @@
 void threadfun()
 {
     static int i = 0;
-    LOG_CRITICAL("This is another thread. This should be in other file thread:" );
+    LOG_CRITICAL("This is ano\nther thread. This should be in other file thread:" );
     LOG_CRITICAL("This is another thread. This should be in other file thread:");
     LOG_CRITICAL("This is another thread. This should be in other file thread:");
     LOG_CRITICAL("This is another thread. This should be in other file thread:");
     LOG_CRITICAL("This is another thread. This should be in other file thread:");
     LOG_CRITICAL("This is another thread. This should be in other file thread:");
-    LOG_CRITICAL("This is another thread. This should be in other file thread:");
-    LOG_CRITICAL("This is another thread. This should be in other file thread:");
+    LOG_CRITICAL("This is another thread. This should be\n in other file thread:");
+    LOG_CRITICAL("This is another thread. This should be\n in other file thread:");
     LOG_CRITICAL("This is another thread. This should be in other file thread:");
 
 }

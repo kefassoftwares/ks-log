@@ -10,7 +10,6 @@ namespace KMergeLogs {
         is.imbue(std::locale::classic());
 
         is >> boost::locale::as::ftime("%Y-%b-%e %H:%M:%S%f") >> _time;
-        //std::cout << _time << std::endl;
     }
 
 

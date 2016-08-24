@@ -7,7 +7,15 @@ int main(int argc, char *argv[])
     {
         std::string logDir(argv[1]);
         KMergeLogs::Merge merge(logDir);
-        merge.start();
+        try
+        {
+            merge.start();
+        }
+        catch (std::exception e)
+        {
+            std::cout << "Uh oh!! Something went wrong." << e.what() << std::endl;
+        }
+
         std::cin >> argc;
         return 0;
     }

@@ -2,8 +2,6 @@
 
 namespace KMergeLogs {
 
-    
-
     TokenSorter::TokenSorter(const TokenizerVector& streams_)
         :_streams(streams_)
     {
@@ -12,7 +10,9 @@ namespace KMergeLogs {
             insertNextToken(stream);
         }
     }
-
+    /*
+    * returns next token from sorted list
+    */
     LogToken TokenSorter::getNextToken()
     {
         if (_sortedTokenQueue.empty()) return LogToken();

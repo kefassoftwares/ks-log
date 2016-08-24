@@ -21,7 +21,6 @@ namespace KMergeLogs {
             {
                 if (boost::filesystem::is_regular_file(it->status()))
                 {
-                    //std::cout << appDir_ << "/" << it->path().filename().string() << " file " << std::endl;
                     if (it->path().filename().string() == ".loginfo")
                     {
                         continue;
@@ -49,7 +48,6 @@ namespace KMergeLogs {
         sstr << is.rdbuf();
         std::string logFormat = sstr.str();
         
-        //std::cout << logFormat << std::endl;
         return logFormat;
     }
 
