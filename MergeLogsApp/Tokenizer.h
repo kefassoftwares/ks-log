@@ -18,7 +18,7 @@ namespace KMergeLogs {
     private:
         void refillBuffer();
 
-        const IfstreamPtr&          _stream;
+        IfstreamPtr                 _stream;
         char                        _buffer[8193];
         std::streamsize             _nReadBytes;
         std::streamsize             _bufferConsumed = 0;

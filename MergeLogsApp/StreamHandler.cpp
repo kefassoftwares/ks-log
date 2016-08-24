@@ -8,6 +8,7 @@ namespace KMergeLogs {
         :_appDir(appDir_)
     {
         boost::filesystem::path path(appDir_);
+        _oStreamPtr.reset(new std::ofstream(appDir_+"/Merged.txt"));
 
         FormatAnalyzer analyzer(readFormatString());
         std::regex formatRegex = analyzer.getRegex();
